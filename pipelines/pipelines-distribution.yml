@@ -1,0 +1,47 @@
+template: true
+valuesFilePath: ./values-distribution.yml
+
+resources: 
+  - name: "{{ .Values.pipelines.name }}_rb"
+    type: ReleaseBundle
+    configuration:
+      sourceDistribution: {{ .Values.distribution }}
+      name: {{ .Values.pipelines.name }}
+      version: NOT_USED
+  
+  - name: "{{ .Values.pipelines.name }}_dr"
+    type: DistributionRule
+    configuration:
+      sourceDistribution: {{ .Values.distribution }}
+      siteName: "*"
+      cityName: "*"
+      countryCodes:
+        - "*"
+
+pipelines:
+  - name: {{ .Values.pipelines.name }}
+    steps:
+      - name: create_release_bundle
+        type: CreateReleaseBundle
+        configuration:
+          releaseBundleName: {{ .Values.pipelines.name }}
+          releaseBundleVersion: ${run_number}
+          dryRun: false
+          sign: true
+          description: "Release {{ .Values.pipelines.name }} ver. ${run_number}"
+          inputResources:
+            - name: {{ .Values.pipelines.core.docker.name }}
+          outputResources:
+            - name: "{{ .Values.pipelines.name }}_rb"
+          releaseNotes:
+            content: |
+              ## Release {{ .Values.pipelines.name }} ver. ${run_number}
+            syntax: markdown
+              
+      - name: distribute_release_bundle
+        type: DistributeReleaseBundle
+        configuration:
+          dryRun: false
+          inputResources:
+            - name: "{{ .Values.pipelines.name }}_rb"
+            - name: "{{ .Values.pipelines.name }}_dr"

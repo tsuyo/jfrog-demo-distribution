@@ -1,0 +1,7 @@
+artifactory: artifactory
+distribution: distribution
+pipelines:
+  name: jfrog_demo_distribution
+  core:
+    docker:
+      name: jfrog_demo_core_docker
