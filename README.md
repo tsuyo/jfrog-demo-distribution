@@ -15,13 +15,8 @@ Pipelines
 - Select "demo" project -> Project Settings -> Pipeline Sources -> Add Pipeline Source -> From YAML
   - Branch Type: Single Branch
   - Protocol Type: HTTPS
-  - Name: jfrog_demo_helm
+  - Name: jfrog_demo_distribution
   - SCM Provider Integration: github
-  - Repository Full Name: tsuyo/jfrog-demo-helm
+  - Repository Full Name: tsuyo/jfrog-demo-distribution
   - Branch: main
   - Pipeline Config File Filter: pipelines/pipelines-.+.yml
-
-## Local Test
-```
-$ helm upgrade jfrog-demo -i -n jfrog-demo --set image.name=platform.dev.gcp.tsuyo.org/demo-docker/jfrog-demo-core --set image.tag=1 --dry-run --debug ./jfrog-demo-chart
-```

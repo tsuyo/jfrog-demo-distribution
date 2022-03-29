@@ -13,6 +13,7 @@ resources:
     type: DistributionRule
     configuration:
       sourceDistribution: {{ .Values.distribution }}
+      serviceName: "*"
       siteName: "*"
       cityName: "*"
       countryCodes:
